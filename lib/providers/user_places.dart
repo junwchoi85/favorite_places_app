@@ -14,4 +14,7 @@ class UserPlacesNotifier extends StateNotifier<List<Place>> {
   }
 }
 
-final userPlacesProvider = StateNotifierProvider((ref) => UserPlacesNotifier());
+/// Telling Dart that this will return a new instance of UserPlacesNotifier.
+final userPlacesProvider =
+    StateNotifierProvider<UserPlacesNotifier, List<Place>>(
+        (ref) => UserPlacesNotifier());
