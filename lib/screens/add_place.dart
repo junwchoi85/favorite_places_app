@@ -33,7 +33,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Place'),
+        title: const Text('Add New Place'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10),
