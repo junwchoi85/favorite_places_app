@@ -47,11 +47,14 @@ class _ImageInputState extends State<ImageInput> {
 
     if (_selectImage != null) {
       /// Display the image that the user has selected.
-      content = Image.file(
-        _selectImage!,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
+      content = GestureDetector(
+        onTap: _takePicture,
+        child: Image.file(
+          _selectImage!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
       );
     }
 
