@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -16,6 +17,16 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   PlaceLocation? _pickedLocation;
   var _isGettingLocation = false;
+
+  String get locationImage {
+    if (_pickedLocation == null) {
+      return '';
+    }
+    final lat = _pickedLocation!.latitude;
+    final lng = _pickedLocation!.longitude;
+    
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=AIzaSyARECm6iN8vgPcWEmscg4ESP11CXFaFLio';
+  }
 
   /// Get the current location of the user.
   void _getCurrentLocation() async {
@@ -49,7 +60,7 @@ class _LocationInputState extends State<LocationInput> {
     final lat = locationData.latitude;
     final lng = locationData.longitude;
 
-    if(lat == null || lng == null) {
+    if (lat == null || lng == null) {
       return;
     }
 
@@ -78,6 +89,21 @@ class _LocationInputState extends State<LocationInput> {
             color: Theme.of(context).colorScheme.onBackground,
           ),
     );
+
+    if (_pickedLocation != null) {
+      /// Fetch a image through the network.
+      previewContent = Image.network(
+        locationImage,
+        fit: BoxFit.cover,
+        width: double.infinity,
+      );
+    } else {
+      previewContent = const Text(
+        "No location chosen",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.black),
+      );
+    }
 
     if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();

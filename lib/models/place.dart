@@ -6,7 +6,6 @@ const uuid = Uuid();
 
 /// A blueprint of the location of a place.
 class PlaceLocation {
-
   final double latitude;
   final double longitude;
   final String address;
@@ -22,7 +21,11 @@ class Place {
   final String id;
   final String title;
   final File image;
-  final PlaceLocation location;
+  // final PlaceLocation location;
 
-  Place({required this.title, required this.image, required this.location}) : id = uuid.v4();
+  Place({
+    required this.title, 
+    required this.image
+    // required this.location
+  }) : id = uuid.v4();
 }
