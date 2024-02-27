@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:favorite_places_app/models/place.dart';
 
 class LocationInput extends StatefulWidget {
   const LocationInput({Key? key}) : super(key: key);
@@ -9,7 +14,7 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  Location? _pickedLocation;
+  PlaceLocation? _pickedLocation;
   var _isGettingLocation = false;
 
   /// Get the current location of the user.
@@ -41,27 +46,40 @@ class _LocationInputState extends State<LocationInput> {
     });
 
     locationData = await location.getLocation();
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if(lat == null || lng == null) {
+      return;
+    }
+
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyARECm6iN8vgPcWEmscg4ESP11CXFaFLio');
+    final response = await http.get(url);
+    final retData = json.decode(response.body);
+    final address = retData['results'][0]['formatted_address'];
 
     setState(() {
+      _pickedLocation = PlaceLocation(
+        latitude: lat,
+        longitude: lng,
+        address: address,
+      );
       _isGettingLocation = false;
     });
-
-    print(locationData.latitude);
-    print(locationData.longitude);
   }
 
   @override
   Widget build(BuildContext context) {
-
     Widget previewContent = Text(
-            "Map goes here",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
-          );
-    
-    if(_isGettingLocation){
+      "Map goes here",
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+    );
+
+    if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();
     }
 
