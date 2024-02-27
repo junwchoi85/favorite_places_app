@@ -9,15 +9,14 @@ class PlacesDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Place Detail')),
-      body: Center(
-        child: Text(
-          'Place Detail Screen',
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: Theme.of(context).colorScheme.onBackground),
-        ),
+      appBar: AppBar(title: Text(place.title)),
+      body: Stack(
+        children: [ /// Starting with the botom most widget...
+          Image.file(place.image,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,)
+        ],
       ),
     );
   }
