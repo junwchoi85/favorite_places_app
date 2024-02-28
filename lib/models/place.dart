@@ -26,6 +26,7 @@ class Place {
   Place({
     required this.title, 
     required this.image,
-    required this.location
-  }) : id = uuid.v4();
+    required this.location,
+    id, /// override the default value of id.
+  }) : id = id ?? uuid.v4();
 }
